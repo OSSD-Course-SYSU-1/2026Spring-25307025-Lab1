@@ -64,13 +64,21 @@ DevEco Studio——开发工具
 
 项目主要代码目录如下：
 
-```plaintext
-entry/src/main/ets
-├── pages
-├── components
-├── model
-├── utils
-└── IMClientManager.ets
+entry/src/main/ets/
+├── entryability/EntryAbility.ets          # 应用入口
+├── IMClientManager.ets                    # WebSocket通信管理
+├── pages/
+│   ├── SplashPage.ets                     # 启动页
+│   ├── SafePage.ets                       # 隐私协议页  
+│   ├── LoginPage.ets                      # 登录页
+│   ├── ChatPage.ets                       # 聊天页面（当前主页面）
+│   ├── model/
+│   │   ├── Message.ets                    # 消息数据模型
+│   │   ├── MessagesProvider.ets           # 消息数据管理
+│   │   └── MessagesDataSource.ets         # 消息UI数据源
+│   ├── components/                         # 组件层
+│   ├── constants/                         # 常量定义
+│   └── utils/                             # 工具类
 
 整体结构如下：
 UI层
