@@ -25,7 +25,6 @@ export struct CustomeTitleBar {
 
   @Prop keepAliveStatus: boolean;
 
-<<<<<<< HEAD
   // 会话名称（用于显示在标题栏）
   @Prop titleName: string = 'HarmonyChat';
 
@@ -35,8 +34,6 @@ export struct CustomeTitleBar {
   // 返回按钮点击回调
   onBackClick?: () => void;
 
-=======
->>>>>>> b0e1655266e0814d49edf4e9ff1799d2031749ef
   // 返回按钮图片
   backImg: Resource = $r("app.media.widget_title_btn_back_normal");
 
@@ -44,7 +41,6 @@ export struct CustomeTitleBar {
 
     Column() {
       Row() {
-<<<<<<< HEAD
         // 返回按钮
         if (this.showBackButton) {
           Row() {
@@ -67,12 +63,6 @@ export struct CustomeTitleBar {
           Text(this.titleName)
             .textAlign(TextAlign.Start)
             .fontSize(18)
-=======
-        Row() {
-          Text('HarmonyChat')
-            .textAlign(TextAlign.Start)
-            .fontSize(22)
->>>>>>> b0e1655266e0814d49edf4e9ff1799d2031749ef
             .maxLines(1)
             .fontColor(Color.Black)
             .fontWeight(500)

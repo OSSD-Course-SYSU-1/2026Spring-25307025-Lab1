@@ -22,10 +22,7 @@ import {router } from '@kit.ArkUI';
 import ToolKits from './utils/ToolKits';
 import { common } from '@kit.AbilityKit';
 import { MsgTimeView } from './components/msg_view/MsgTimeView';
-<<<<<<< HEAD
 import SessionRepository from './model/SessionRepository';
-=======
->>>>>>> b0e1655266e0814d49edf4e9ff1799d2031749ef
 
 const TAG: string = '[ChatPage] '
 
@@ -40,7 +37,6 @@ struct ChatPage {
   /** 聊天列表的滚动条组件 */
   private scroller: Scroller = new Scroller();
 
-<<<<<<< HEAD
   /** 路由参数：会话ID */
   @State sessionId: string = '';
   /** 路由参数：会话类型（0-单聊，1-群聊） */
@@ -48,8 +44,6 @@ struct ChatPage {
   /** 路由参数：对方昵称 */
   @State nickname: string = 'HarmonyChat';
 
-=======
->>>>>>> b0e1655266e0814d49edf4e9ff1799d2031749ef
   /** 连接状态：false 连接断开、true 连接正常 */
   @State connectStatus: boolean = ClientCoreSDK.getInstance().connectedToServer;
   /** 心跳状态：true表示刚刚已发送心跳包，本心跳状态仅仅是为了在ui界面上实现心跳呼吸灯效果 */
@@ -77,7 +71,6 @@ struct ChatPage {
    * 生命周期中只被调用一次，类似于iOS中的viewDidLoad、Android中的onCreate.
    */
   aboutToAppear() {
-<<<<<<< HEAD
     // 接收路由参数
     try {
       const params = router.getParams() as Record<string, Object>;
@@ -99,8 +92,6 @@ struct ChatPage {
       SessionRepository.getInstance().clearUnreadCount(this.sessionId);
     }
     
-=======
->>>>>>> b0e1655266e0814d49edf4e9ff1799d2031749ef
     // 添加事件通知
     this.addEvents();
     // 添加一条预定义的系统消息在列表列表里
@@ -266,7 +257,6 @@ struct ChatPage {
   build() {
     Column() {
       // 聊天界面自定义标题栏
-<<<<<<< HEAD
       CustomeTitleBar({ 
         connectStatus: this.connectStatus, 
         keepAliveStatus: this.keepAliveStatus,
@@ -276,9 +266,6 @@ struct ChatPage {
           router.back();
         }
       })
-=======
-      CustomeTitleBar({ connectStatus: this.connectStatus, keepAliveStatus: this.keepAliveStatus })
->>>>>>> b0e1655266e0814d49edf4e9ff1799d2031749ef
 
       // 聊天界面内容区
       Column() {
@@ -334,14 +321,10 @@ struct ChatPage {
       .layoutWeight(1)
 
       // 底部消息输入区
-<<<<<<< HEAD
       ChatInputView({ 
         sessionId: this.sessionId, 
         receiverId: this.sessionId 
       })
-=======
-      ChatInputView()
->>>>>>> b0e1655266e0814d49edf4e9ff1799d2031749ef
     }
     .width('100%')
     .height('100%')

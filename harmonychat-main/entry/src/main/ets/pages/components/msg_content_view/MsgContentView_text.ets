@@ -12,10 +12,7 @@ import Message from "../../model/Message";
 
 /**
  * 普通聊天消息内容组件（文本消息）。
-<<<<<<< HEAD
  * 使用圆角矩形气泡样式。
-=======
->>>>>>> b0e1655266e0814d49edf4e9ff1799d2031749ef
  *
  * @author Jack Jiang(http://www.52im.net/thread-2792-1-1.html)
  */
@@ -33,7 +30,6 @@ export struct MsgContentView_text {
             types: [TextDataDetectorType.URL, TextDataDetectorType.PHONE_NUMBER, TextDataDetectorType.EMAIL]
           })
           .fontSize(14)
-<<<<<<< HEAD
           .fontColor(this.message.isOutgoing() ? Color.White : '#333333')
       }
       // 消息气泡四周的空白
@@ -53,17 +49,3 @@ export struct MsgContentView_text {
     }
   }
 }
-=======
-      }
-      // 消息气泡四周的空白
-      .padding(this.message.isOutgoing() ? { top: 14, bottom: 14, left: 14, right: 16 } : { top: 14, bottom: 14, left: 16, right: 14 })
-      // 气泡图片的不可拉伸区
-      .backgroundImageResizable(this.message.isOutgoing() ? { slice: { top: 21, left: 14, bottom: 14, right: 18, } } : {slice: {top: 21,left: 18,bottom: 14,right: 14, } })
-      // 气泡背景图
-      .backgroundImage($r(this.message.isOutgoing() ? "app.media.chatto_bg_normal": "app.media.chatfrom_bg_normal"))
-      // 背景图要填满组件
-      .backgroundImageSize({ width: '100%', height: '100%' })
-    }
-  }
-}
->>>>>>> b0e1655266e0814d49edf4e9ff1799d2031749ef

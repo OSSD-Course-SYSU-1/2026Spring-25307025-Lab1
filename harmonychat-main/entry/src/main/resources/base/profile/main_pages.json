@@ -1,10 +1,7 @@
 {
   "src": [
     "pages/SafePage",
-<<<<<<< HEAD
     "pages/SessionListPage",
-=======
->>>>>>> b0e1655266e0814d49edf4e9ff1799d2031749ef
     "pages/ChatPage",
     "pages/LoginPage",
     "pages/SplashPage"

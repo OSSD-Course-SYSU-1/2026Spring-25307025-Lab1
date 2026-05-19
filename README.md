@@ -1,4 +1,3 @@
-#I hope I can do better
 #original content:harmonychat-main
 ├── AppScope                # 全局配置
 ├── entry                   # 主模块（唯一业务模块）

@@ -189,6 +189,27 @@ struct SessionListPage {
     });
   }
 
+  /**
+   * 删除会话。
+   */
+  onSessionDelete(session: Session) {
+    AlertDialog.show({
+      message: `确定删除与${session.nickname}的会话吗？`,
+      primaryButton: {
+        value: '取消',
+        action: () => {}
+      },
+      secondaryButton: {
+        value: '删除',
+        fontColor: '#fa5151',
+        action: () => {
+          this.sessionRepository.deleteSession(session.sessionId);
+          this.loadSessions();
+        }
+      }
+    });
+  }
+
   build() {
     Column() {
       // 标题栏
@@ -207,6 +228,9 @@ struct SessionListPage {
                   session: session,
                   onItemClick: (s: Session) => {
                     this.onSessionItemClick(s);
+                  },
+                  onDelete: (s: Session) => {
+                    this.onSessionDelete(s);
                   }
                 })
                 

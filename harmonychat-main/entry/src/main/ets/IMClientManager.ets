@@ -14,6 +14,7 @@ import UIEvent from "./pages/constants/UIEvent";
 import Message from "./pages/model/Message";
 import MessagesProvider from "./pages/model/MessagesProvider";
 import MsgSendStatus from "./pages/constants/MsgSendStatus";
+import SessionRepository from "./pages/model/SessionRepository";
 
 const TAG: string = '[IMClientManager] ';
 
@@ -176,6 +177,14 @@ export default class IMClientManager {
       m.fingerPrintOfProtocal = protocal.fp;
       // 将收到的消息放入全局消息缓存集合中（MessageProvider.putMessage()方法中会同时通知ui层进行刷新显示）
       this.messageProvider.putMessage(m);
+      
+      // 如果当前不在该会话页面，则增加未读数
+      const currentSessionId = this.messageProvider.getCurrentSessionId();
+      if (currentSessionId !== protocal.from) {
+        SessionRepository.getInstance().increaseUnreadCount(protocal.from);
+        // 更新会话列表中的最后一条消息
+        SessionRepository.getInstance().updateLastMessage(protocal.from, protocal.dataContent, Date.now());
+      }
     });
 
     /*

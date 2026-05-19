@@ -26,7 +26,6 @@ export default class MessagesDataSource extends BasicDataSource<Message> {
   /** 引用全局消息缓存管理类 MessageProvider 中缓存消息集合（浅拷贝）*/
   private messages: Array<Message> = IMClientManager.getInstance().getMessageProvider().getMessages();
 
-<<<<<<< HEAD
   /**
    * 刷新数据源引用（当切换会话时调用）。
    */
@@ -35,8 +34,6 @@ export default class MessagesDataSource extends BasicDataSource<Message> {
     this.notifyDataReload();
   }
 
-=======
->>>>>>> b0e1655266e0814d49edf4e9ff1799d2031749ef
   notifyDataReload(): void {
     super.notifyDataReload();
   }
@@ -60,8 +57,4 @@ export default class MessagesDataSource extends BasicDataSource<Message> {
     // 优化点：给更新的消息对象加个最近更新时间戳，这应该是个更通用的key计算项，不然一旦变更内容多了，这个key的计算就不那么优雅了
     return m.msgType + '-' + m.fingerPrintOfProtocal + '-' + m.sendStatus;
   }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> b0e1655266e0814d49edf4e9ff1799d2031749ef

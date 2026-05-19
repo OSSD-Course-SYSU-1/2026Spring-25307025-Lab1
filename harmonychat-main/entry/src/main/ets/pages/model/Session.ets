@@ -14,6 +14,7 @@
  *
  * @author Jack Jiang(http://www.52im.net/thread-2792-1-1.html)
  */
+@Observed
 export default class Session {
   /** 会话ID（单聊为对方uid，群聊为gid） */
   sessionId: string = '';
