@@ -80,6 +80,8 @@ struct SessionListPage {
   onPageShow(): void {
     // 设置全面屏状态栏颜色
     ToolKits.setStatusBarColor(getContext(this), '#000000', '#ededed');
+    // 刷新会话列表数据（从聊天页返回时更新红点状态）
+    this.loadSessions();
   }
 
   /**
@@ -172,8 +174,9 @@ struct SessionListPage {
    * 点击会话项，进入聊天页面。
    */
   onSessionItemClick(session: Session) {
-    // 清除未读消息
+    // 清除未读消息并立即刷新UI
     this.sessionRepository.clearUnreadCount(session.sessionId);
+    this.loadSessions();
     
     // 跳转到聊天页面，传递会话参数
     router.pushUrl({

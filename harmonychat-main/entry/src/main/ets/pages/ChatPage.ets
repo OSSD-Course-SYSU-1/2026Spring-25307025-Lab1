@@ -88,6 +88,8 @@ struct ChatPage {
       IMClientManager.getInstance().getMessageProvider().setCurrentSessionId(this.sessionId);
       // 刷新消息数据源
       this.messagesDataSource.refreshMessages();
+      // 进入聊天页面时立即清除未读数
+      SessionRepository.getInstance().clearUnreadCount(this.sessionId);
     }
     
     // 添加事件通知
@@ -102,10 +104,6 @@ struct ChatPage {
   aboutToDisappear() {
     // 取消事件通知
     this.removeEvents();
-    // 清除当前会话的未读数
-    if (this.sessionId) {
-      SessionRepository.getInstance().clearUnreadCount(this.sessionId);
-    }
   }
 
   /**
