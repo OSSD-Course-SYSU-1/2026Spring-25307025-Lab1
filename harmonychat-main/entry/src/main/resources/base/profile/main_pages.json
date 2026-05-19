@@ -1,0 +1,9 @@
+{
+  "src": [
+    "pages/SafePage",
+    "pages/SessionListPage",
+    "pages/ChatPage",
+    "pages/LoginPage",
+    "pages/SplashPage"
+  ]
+}
