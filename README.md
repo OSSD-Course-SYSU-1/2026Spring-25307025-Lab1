@@ -1,22 +1,8 @@
-#original content:harmonychat-main
-├── AppScope                # 全局配置
-├── entry                   # 主模块（唯一业务模块）
-│   ├── src/main/ets
-│   │   ├── pages           # 页面层（UI）
-│   │   ├── components      # UI组件
-│   │   ├── model           # 数据模型
-│   │   ├── utils           # 工具类
-│   │   └── IMClientManager # IM核心逻辑
+预计添加功能：
+1、会话列表（扩展：未读红点、新增聊天按钮）
+2、深色模式（扩展，大小屏匹配）
+3、消息搜索功能？
+4、聊天室功能（可匿名？）
 
-#Optimization:(引入分层架构）
-UI（pages/components）
-↓
-ViewModel / Store
-↓
-Repository
-↓
-Service（IMClient）
-#拆分IMClientManager
-IMConnectionService   # 连接管理
-MessageService        # 收发消息
-EventBus / Dispatcher # 消息分发
+5.19--添加会话列表功能，以及未读消息红点功能
+5.21--添加浮动圆形按钮功能，可通过圆形按钮新增聊天
