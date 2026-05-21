@@ -13,6 +13,7 @@ import { ErrorCode, ClientCoreSDK, PKickoutInfo } from 'mobileimsdk/Index';
 import Session from './model/Session';
 import SessionRepository from './model/SessionRepository';
 import { SessionListItem } from './components/SessionListItem';
+import { NewChatDialog } from './components/NewChatDialog';
 import IMClientManager from '../IMClientManager';
 import UIEvent from './constants/UIEvent';
 import ToolKits from './utils/ToolKits';
@@ -40,6 +41,20 @@ struct SessionListPage {
   
   /** 会话列表数据 */
   @State sessions: Session[] = [];
+  
+  /** 新建聊天对话框控制器 */
+  private newChatDialogController: CustomDialogController = new CustomDialogController({
+    builder: NewChatDialog({
+      onConfirm: (uid: string) => {
+        this.createNewChat(uid);
+      }
+    }),
+    autoCancel: true,
+    alignment: DialogAlignment.Center,
+    customStyle: true,
+    backgroundColor: Color.Transparent,
+    cornerRadius: 16,
+  });
   
   /** 事件回调 */
   private loginCompleteEventCallback?: Function;
@@ -210,55 +225,103 @@ struct SessionListPage {
     });
   }
 
+  /**
+   * 创建新会话。
+   * @param uid 对方用户 UID
+   */
+  private createNewChat(uid: string): void {
+    // 检查是否已存在该会话
+    const existingSession = this.sessionRepository.getSessionById(uid);
+    if (existingSession) {
+      // 已存在，直接进入聊天页面
+      this.onSessionItemClick(existingSession);
+      return;
+    }
+
+    // 创建新会话
+    const newSession = Session.createPrivateSession(
+      uid,                                          // sessionId: 用户 UID
+      `用户${uid}`,                                  // nickname: 用户+UID
+      $r('app.media.startIcon1'),                   // avatar: 默认头像
+      '开始聊天吧',                                  // lastMessage
+      Date.now(),                                   // lastMessageTime
+      0                                             // unreadCount
+    );
+
+    // 添加到会话仓库
+    this.sessionRepository.addOrUpdateSession(newSession);
+    
+    // 刷新列表
+    this.loadSessions();
+    
+    // 自动进入新创建的会话
+    this.onSessionItemClick(newSession);
+  }
+
+  /**
+   * 显示新建聊天对话框。
+   */
+  private showNewChatDialog(): void {
+    this.newChatDialogController.open();
+  }
+
   build() {
-    Column() {
-      // 标题栏
-      this.TitleBar()
-      
-      // 网络状态提示
-      this.NetworkStatusView()
-      
-      // 会话列表
-      if (this.sessions.length > 0) {
-        List() {
-          ForEach(this.sessions, (session: Session, index: number) => {
-            ListItem() {
-              Column() {
-                SessionListItem({
-                  session: session,
-                  onItemClick: (s: Session) => {
-                    this.onSessionItemClick(s);
-                  },
-                  onDelete: (s: Session) => {
-                    this.onSessionDelete(s);
-                  }
-                })
-                
-                // 分隔线
-                Divider()
-                  .width('100%')
-                  .height(0.5)
-                  .color('#f0f0f0')
-                  .margin({ left: 72 })
+    Stack({ alignContent: Alignment.BottomEnd }) {
+      // 主内容区域
+      Column() {
+        // 标题栏
+        this.TitleBar()
+        
+        // 网络状态提示
+        this.NetworkStatusView()
+        
+        // 会话列表
+        if (this.sessions.length > 0) {
+          List() {
+            ForEach(this.sessions, (session: Session, index: number) => {
+              ListItem() {
+                Column() {
+                  SessionListItem({
+                    session: session,
+                    onItemClick: (s: Session) => {
+                      this.onSessionItemClick(s);
+                    },
+                    onDelete: (s: Session) => {
+                      this.onSessionDelete(s);
+                    }
+                  })
+                  
+                  // 分隔线
+                  Divider()
+                    .width('100%')
+                    .height(0.5)
+                    .color('#f0f0f0')
+                    .margin({ left: 72 })
+                }
               }
-            }
-          }, (session: Session) => session.getKey())
+            }, (session: Session) => session.getKey())
+          }
+          .width('100%')
+          .layoutWeight(1)
+          .backgroundColor('#f5f5f5')
+          .listDirection(Axis.Vertical)
+          .scrollBar(BarState.Off)
+          .edgeEffect(EdgeEffect.Spring)
+        } else {
+          // 空状态
+          this.EmptyView()
         }
-        .width('100%')
-        .layoutWeight(1)
-        .backgroundColor('#f5f5f5')
-        .listDirection(Axis.Vertical)
-        .scrollBar(BarState.Off)
-        .edgeEffect(EdgeEffect.Spring)
-      } else {
-        // 空状态
-        this.EmptyView()
       }
+      .width('100%')
+      .height('100%')
+      .backgroundColor('#ededed')
+      .expandSafeArea([SafeAreaType.SYSTEM], [SafeAreaEdge.TOP, SafeAreaEdge.BOTTOM])
+
+      // 悬浮按钮（FAB）
+      this.FloatingActionButton()
     }
     .width('100%')
     .height('100%')
-    .backgroundColor('#ededed')
-    .expandSafeArea([SafeAreaType.SYSTEM], [SafeAreaEdge.TOP, SafeAreaEdge.BOTTOM])
   }
 
   /**
@@ -342,5 +405,34 @@ struct SessionListPage {
     .layoutWeight(1)
     .justifyContent(FlexAlign.Center)
     .backgroundColor('#f5f5f5')
+  }
+
+  /**
+   * 悬浮按钮（FAB）
+   * 用于创建新聊天
+   */
+  @Builder
+  FloatingActionButton() {
+    Column() {
+      Button({ type: ButtonType.Circle }) {
+        Text('+')
+          .fontSize(28)
+          .fontColor(Color.White)
+          .fontWeight(500)
+      }
+      .width(56)
+      .height(56)
+      .backgroundColor('#07c160')
+      .shadow({
+        radius: 12,
+        color: 'rgba(0, 0, 0, 0.2)',
+        offsetX: 0,
+        offsetY: 4
+      })
+      .onClick(() => {
+        this.showNewChatDialog();
+      })
+    }
+    .margin({ right: 16, bottom: 24 })
   }
 }
