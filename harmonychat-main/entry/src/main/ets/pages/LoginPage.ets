@@ -60,8 +60,8 @@ struct LoginPage {
 
         // TODO: -> 友情提示：登陆MobileIMSDK服务器成功后的事情在此实现即可！
 
-        // 进入会话列表界面
-        router.replaceUrl({ url: 'pages/SessionListPage'});
+        // 进入主界面（支持多端自适应布局）
+        router.replaceUrl({ url: 'pages/MainPage'});
       }
       // 登陆失败
       else {

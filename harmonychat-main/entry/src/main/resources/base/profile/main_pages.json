@@ -1,5 +1,6 @@
 {
   "src": [
+    "pages/MainPage",
     "pages/SafePage",
     "pages/SessionListPage",
     "pages/ChatPage",
