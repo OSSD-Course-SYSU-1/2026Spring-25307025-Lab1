@@ -20,21 +20,34 @@ const PREFERENCES_NAME: string = 'MobileIMSDKStore';
  */
 export default class PreferenceManager {
   private preferences?: preferences.Preferences;
-  private context = getContext(this) as common.UIAbilityContext;
+  private context?: common.UIAbilityContext;
   private static instance: PreferenceManager;
 
-  private constructor() {
-    this.initPreference(PREFERENCES_NAME);
+  private constructor(context?: common.UIAbilityContext) {
+    this.context = context;
+    if (context) {
+      this.initPreference(PREFERENCES_NAME);
+    }
   }
 
-  public static getInstance(): PreferenceManager {
+  public static getInstance(context?: common.UIAbilityContext): PreferenceManager {
     if (!PreferenceManager.instance) {
-      PreferenceManager.instance = new PreferenceManager();
+      if (!context) {
+        throw new Error('Context must be provided for first initialization');
+      }
+      PreferenceManager.instance = new PreferenceManager(context);
+    } else if (context && !PreferenceManager.instance.context) {
+      // Update context if not set
+      PreferenceManager.instance.context = context;
+      PreferenceManager.instance.initPreference(PREFERENCES_NAME);
     }
     return PreferenceManager.instance;
   }
 
   async initPreference(storeName: string): Promise<void> {
+    if (!this.context) {
+      throw new Error('Context is not set');
+    }
     return preferences.getPreferences(this.context, storeName)
       .then((preferences: preferences.Preferences) => {
         this.preferences = preferences;

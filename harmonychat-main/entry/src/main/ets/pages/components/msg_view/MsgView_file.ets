@@ -10,12 +10,12 @@
 
 import Message from "../../model/Message";
 import MsgType from "../../constants/MsgType";
-import { MsgContentView_text } from "../msg_content_view/MsgContentView_text";
+import { MsgContentView_file } from "../msg_content_view/MsgContentView_file";
 import MsgSendStatus from "../../constants/MsgSendStatus";
 import ToolKits from "../../utils/ToolKits";
 
 /**
- * 普通聊天消息UI组件。
+ * 文件消息UI组件。
  * 
  * 布局说明：
  * - 对方消息：头像在左，昵称+气泡在右，整体靠左
@@ -24,7 +24,7 @@ import ToolKits from "../../utils/ToolKits";
  * @author Jack Jiang(http://www.52im.net/thread-2792-1-1.html)
  */
 @Component
-export struct MsgView_normal {
+export struct MsgView_file {
   message?: Message;
 
   /**
@@ -76,10 +76,8 @@ export struct MsgView_normal {
                 .margin({ right: 4 })
             }
             
-            // 消息气泡
-            if (this.message.msgType === MsgType.TYPE_TEXT) {
-              MsgContentView_text({ message: this.message })
-            }
+            // 文件消息气泡
+            MsgContentView_file({ message: this.message })
           }
           .alignItems(VerticalAlign.Center)
           
@@ -104,17 +102,15 @@ export struct MsgView_normal {
             .margin({ left: 16, right: 8 })
           
           // 消息内容区域
-          Column({ space: 2 }) {
+          Column({ space: 4 }) {
             // 昵称
             Text(this.message.senderDisplayName)
               .fontSize(12)
               .fontColor('#666666')
               .margin({ left: 4, bottom: 2 })
             
-            // 消息气泡
-            if (this.message.msgType === MsgType.TYPE_TEXT) {
-              MsgContentView_text({ message: this.message })
-            }
+            // 文件消息气泡
+            MsgContentView_file({ message: this.message })
           }
           .alignItems(HorizontalAlign.Start)
           

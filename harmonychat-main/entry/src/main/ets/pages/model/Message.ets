@@ -38,6 +38,13 @@ export default class Message {
   /** 消息所对应的群聊发送者发出的原始包协议包指纹，目前只在收到的消息对象中有意义，且仅用于群聊消息时作为消息"撤回"功能的匹配依据 */
   fingerPrintOfParent: string = '';
 
+  /** 文件消息相关字段 */
+  fileName: string = '';
+  fileSize: number = 0;
+  filePath: string = '';
+  fileType: string = '';
+  transferStatus: number = 0; // 0: 未开始, 1: 传输中, 2: 完成, 3: 失败
+
   /** 辅助UI显示字段：消息从网络发送的当前状态. 本字段仅针对发送的消息（而非收到的消息哦） */
   sendStatus: MsgSendStatus = MsgSendStatus.sending;
 
@@ -113,5 +120,87 @@ export default class Message {
   static createChatMsgEntity_INCOME_SYSTEAMINFO(senderId: string, message: string, time: number): Message {
     // 生成一个fp吧，这个只用于LayzyForEach时方便ui刷新逻辑时使用，别无他用！
     return new Message(senderId, Protocal.genFingerPrint(), time, message, MsgType.TYPE_SYSTEAM$INFO);
+  }
+
+  /**
+   * 构建一条发出的文件消息对象。
+   *
+   * @param fileName 文件名
+   * @param fileSize 文件大小
+   * @param filePath 文件路径
+   * @param fileType 文件类型
+   * @param fingerPrint 消息ID
+   * @returns 新的消息对象
+   */
+  static createChatMsgEntity_OUTGO_FILE(fileName: string, fileSize: number, filePath: string, fileType: string, fingerPrint: string): Message {
+    let localUid = ToolKits.getLocalUserUid();
+    if(!localUid) {
+      ClientCoreSDK.Log.error('无法读取本地用户uid，还没有登录？');
+    }
+
+    // 根据文件类型确定消息类型
+    let msgType: number;
+    switch (fileType.toLowerCase()) {
+      case 'image':
+        msgType = MsgType.TYPE_FILE_IMAGE;
+        break;
+      case 'text':
+        msgType = MsgType.TYPE_FILE_TEXT;
+        break;
+      case 'pdf':
+        msgType = MsgType.TYPE_FILE_PDF;
+        break;
+      default:
+        msgType = MsgType.TYPE_FILE_OTHER;
+    }
+
+    let cm: Message = new Message(localUid ? localUid : '', "我", Utils.getCurrentUTCTimestamp(), fileName, msgType);
+    cm.fingerPrintOfProtocal = fingerPrint;
+    cm.fileName = fileName;
+    cm.fileSize = fileSize;
+    cm.filePath = filePath;
+    cm.fileType = fileType;
+    cm.transferStatus = 0; // 未开始
+    
+    return cm;
+  }
+
+  /**
+   * 构建一条收到的文件消息对象。
+   *
+   * @param senderId 发送者uid
+   * @param nickName 发送者昵称
+   * @param fileName 文件名
+   * @param fileSize 文件大小
+   * @param filePath 文件路径
+   * @param fileType 文件类型
+   * @param time 消息时间戳，0表示使用当前系统时间戳
+   * @returns 新的消息对象
+   */
+  static createChatMsgEntity_INCOME_FILE(senderId: string, nickName: string, fileName: string, fileSize: number, filePath: string, fileType: string, time: number): Message {
+    // 根据文件类型确定消息类型
+    let msgType: number;
+    switch (fileType.toLowerCase()) {
+      case 'image':
+        msgType = MsgType.TYPE_FILE_IMAGE;
+        break;
+      case 'text':
+        msgType = MsgType.TYPE_FILE_TEXT;
+        break;
+      case 'pdf':
+        msgType = MsgType.TYPE_FILE_PDF;
+        break;
+      default:
+        msgType = MsgType.TYPE_FILE_OTHER;
+    }
+
+    let cm: Message = new Message(senderId, nickName, time, fileName, msgType);
+    cm.fileName = fileName;
+    cm.fileSize = fileSize;
+    cm.filePath = filePath;
+    cm.fileType = fileType;
+    cm.transferStatus = 2; // 接收完成
+    
+    return cm;
   }
 }

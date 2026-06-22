@@ -51,6 +51,14 @@
     {
       "name": "background_task_reason",
       "value": "需要获取您的后台任务权限，用于后台接收聊天消息"
+    },
+    {
+      "name": "distributed_datasync_reason",
+      "value": "需要获取分布式数据同步权限，用于附近设备文件传输"
+    },
+    {
+      "name": "distributed_virtualdevice_reason",
+      "value": "需要获取分布式虚拟设备权限，用于发现附近设备"
     }
   ]
 }

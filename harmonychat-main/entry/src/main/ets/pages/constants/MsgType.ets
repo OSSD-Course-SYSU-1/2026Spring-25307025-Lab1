@@ -30,6 +30,17 @@ export default class MsgType {
   /** 聊天消息类型之：系统消息或提示信息（此类消息通常由服务器即f="0"的用户发出）. */
   static readonly TYPE_SYSTEAM$INFO: number = 90;
 
+  /** 聊天消息类型之：图片文件消息 */
+  static readonly TYPE_FILE_IMAGE: number = 10;
+
+  /** 聊天消息类型之：文本文件消息 */
+  static readonly TYPE_FILE_TEXT: number = 11;
+
+  /** 聊天消息类型之：PDF文件消息 */
+  static readonly TYPE_FILE_PDF: number = 12;
+
+  /** 聊天消息类型之：其他文件消息 */
+  static readonly TYPE_FILE_OTHER: number = 13;
 
 
   // others .......

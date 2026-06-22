@@ -69,20 +69,20 @@
           "when": "inuse"
         }
       },
-//      {
-//        "name": "ohos.permission.WRITE_MEDIA",
-//        "reason": "$string:reason_write_media",
-//        "usedScene": {
-//          "when": "always"
-//        }
-//      },
-//      {
-//        "name": "ohos.permission.READ_MEDIA",
-//        "reason": "$string:reason_write_media",
-//        "usedScene": {
-//          "when": "always"
-//        }
-//      },
+      {
+        "name": "ohos.permission.WRITE_MEDIA",
+        "reason": "$string:reason_write_media",
+        "usedScene": {
+          "when": "always"
+        }
+      },
+      {
+        "name": "ohos.permission.READ_MEDIA",
+        "reason": "$string:reason_read_media",
+        "usedScene": {
+          "when": "always"
+        }
+      },
 //      {
 //        "name": "ohos.permission.CAMERA",
 //        "reason": "$string:camera_auth_reason",
@@ -123,7 +123,27 @@
 //          ],
 //          "when": "always"
 //        },
-//      }
+//      },
+      {
+        "name": "ohos.permission.DISTRIBUTED_DATASYNC",
+        "reason": "$string:distributed_datasync_reason",
+        "usedScene": {
+          "abilities": [
+            "EntryAbility"
+          ],
+          "when": "always"
+        }
+      },
+      {
+        "name": "ohos.permission.DISTRIBUTED_SOFTBUS_CENTER",
+        "reason": "$string:distributed_virtualdevice_reason",
+        "usedScene": {
+          "abilities": [
+            "EntryAbility"
+          ],
+          "when": "always"
+        }
+      }
     ]
   }
 }

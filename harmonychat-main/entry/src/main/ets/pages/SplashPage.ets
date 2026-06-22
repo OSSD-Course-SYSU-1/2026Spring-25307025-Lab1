@@ -25,13 +25,15 @@ const TAG: string = '[SplashPage] ';
 @Entry
 @Component
 struct SplashPage {
-  private preferenceManager: PreferenceManager = PreferenceManager.getInstance();
+  private preferenceManager?: PreferenceManager;
   isAgreedPrivacy: boolean = router.getParams() ? (router.getParams() as Record<string, boolean>)['isAgreedPrivacy'] : false;
 
   /**
    * 生命周期中只被调用一次，类似于iOS中的viewDidLoad、Android中的onCreate.
    */
   aboutToAppear(): void {
+    // 初始化 PreferenceManager
+    this.preferenceManager = PreferenceManager.getInstance(getContext(this) as common.UIAbilityContext);
     setTimeout(() => {
       this.checkAgreedPrivacy();
     }, 0);
@@ -50,6 +52,10 @@ struct SplashPage {
    * 检查是否已确认过隐私提示（就是在SafePage中确认过的）。
    */
   checkAgreedPrivacy(): void {
+    if (!this.preferenceManager) {
+      console.error('PreferenceManager not initialized');
+      return;
+    }
     if (this.isAgreedPrivacy) {
       this.preferenceManager.setValue('isAgreedPrivacy', true).then(() => {
         ClientCoreSDK.Log.info(TAG+ 'Put the value of isAgreedPrivacy Successfully.');

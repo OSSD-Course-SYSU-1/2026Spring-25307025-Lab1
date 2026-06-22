@@ -29,18 +29,19 @@ export struct MsgContentView_text {
           .dataDetectorConfig({
             types: [TextDataDetectorType.URL, TextDataDetectorType.PHONE_NUMBER, TextDataDetectorType.EMAIL]
           })
-          .fontSize(14)
-          .fontColor(this.message.isOutgoing() ? Color.White : '#333333')
+          .fontSize(16)
+          .fontColor(this.message.isOutgoing() ? Color.White : '#1A1A1A')
+          .lineHeight(22)
       }
       // 消息气泡四周的空白
-      .padding({ top: 10, bottom: 10, left: 14, right: 14 })
+      .padding({ top: 12, bottom: 12, left: 16, right: 16 })
       // 圆角矩形背景
-      .backgroundColor(this.message.isOutgoing() ? '#95EC69' : '#FFFFFF')
-      .borderRadius(8)
+      .backgroundColor(this.message.isOutgoing() ? '#07C160' : '#FFFFFF')
+      .borderRadius(12)
       // 阴影效果
       .shadow({
-        radius: 2,
-        color: '#1A000000',
+        radius: 1,
+        color: '#0A000000',
         offsetX: 0,
         offsetY: 1
       })

@@ -34,6 +34,9 @@ export struct CustomeTitleBar {
   // 返回按钮点击回调
   onBackClick?: () => void;
 
+  // 附近快传按钮点击回调
+  onNearbyClick?: () => void;
+
   // 返回按钮图片
   backImg: Resource = $r("app.media.widget_title_btn_back_normal");
 
@@ -65,90 +68,58 @@ export struct CustomeTitleBar {
             .fontSize(18)
             .maxLines(1)
             .fontColor(Color.Black)
-            .fontWeight(500)
+            .fontWeight(FontWeight.Medium)
             .ellipsisMode(EllipsisMode.CENTER)
             .textOverflow({overflow: TextOverflow.Ellipsis})
-
-          Text('鸿蒙')
-            .fontFamily('HarmonyHeiTi')
-            .fontColor(Color.White)
-            .fontSize(11)
-            .fontWeight(400)
-              // .backgroundColor('#e50a59f7')
-            .backgroundColor(Color.Black)
-            .padding({top:3, bottom:3, left: 4, right: 4})
-            .borderRadius(5)
-            .margin({left: 3})
-
-          Text('v1.0')
-            .fontSize(10)
-            .fontColor('#999')
-            .margin({left: 5})
         }
         .layoutWeight(1)
+        .justifyContent(FlexAlign.Center)
 
         Row() {
-          // Image($r(this.connectStatus ? (this.keepAliveStatus ? 'app.media.ic_net_status_light': 'app.media.ic_net_status_ok') : 'app.media.ic_net_status_warn'))
-          //   .width(12)
-          //   .height(12)
-          //   .objectFit(ImageFit.Fill)
-          //   .margin({right: 5})
-
+          // 网络状态指示器
           Text()
-            .width(12)
-            .height(12)
-            .borderRadius(6)
-            .margin({right: 5})
-            .backgroundColor(this.connectStatus ? (this.keepAliveStatus ? '#f1f515': '#00de7a') : '#ff8c6f')// '#00de7a'
-            .border({width: 1, color: (this.connectStatus ? (this.keepAliveStatus ? '#d1d505': '#00c86e') : '#f26c4f'), radius: 6})
-            .shadow({
-              radius: 15, // 模糊半径
-              color: this.keepAliveStatus ? "#59f1f515" : '#00ffffff', // 阴影颜色
-              offsetX: 0, // X轴偏移量
-              offsetY: 15 // Y轴偏移量
-              })
+            .width(8)
+            .height(8)
+            .borderRadius(4)
+            .margin({right: 12})
+            .backgroundColor(this.connectStatus ? (this.keepAliveStatus ? '#07C160' : '#07C160') : '#FA5151')
+            .border({width: 1, color: this.connectStatus ? (this.keepAliveStatus ? '#07C160' : '#07C160') : '#FA5151', radius: 4})
 
-          Text('UID:')
-            .textAlign(TextAlign.Start)
-            .fontSize(13)
-            .maxLines(1)
-            .fontColor(Color.Black)
-            .fontWeight(500)
-            .margin({right: 2})
-
-          Text(ClientCoreSDK.getInstance().currentLoginInfo?.loginUserId)
-            // .width(40)
-            .constraintSize({maxWidth: 42})
-            .fontSize(13)
-            .fontColor('#505256')
-            .maxLines(2)
-            .ellipsisMode(EllipsisMode.CENTER)
-            .textOverflow({overflow: TextOverflow.Ellipsis})
+          // 附近快传按钮
+          Row() {
+            Image($r("app.media.widget_title_btn_mpre_normal"))
+              .width(24)
+              .height(24)
+              .objectFit(ImageFit.Contain)
+          }
+          .width(40)
+          .height(40)
+          .justifyContent(FlexAlign.Center)
+          .onClick(() => {
+            if (this.onNearbyClick) {
+              this.onNearbyClick();
+            }
+          })
         }
       }
-      .height(58)
-      .padding({left: 10, right: 10})
+      .height(56)
+      .padding({left: 16, right: 16})
 
       this.BottomLine()
 
       // if(!this.connectStatus) {
         Row() {
-          LoadingProgress().width(20).height(20).margin({ right: 8 }).color('#ff6434')
-          // Image($r('app.media.ic_disconnect_info2'))
-          //   .width(14)
-          //   .height(14)
-          //   .objectFit(ImageFit.Fill)
-          //   .margin({right: 8})
-          Text('网络不给力，正在努力恢复中…')
+          LoadingProgress().width(16).height(16).margin({ right: 8 }).color('#FA5151')
+          Text('网络连接异常，正在重连…')
             .maxLines(1)
             .ellipsisMode(EllipsisMode.CENTER)
             .textOverflow({ overflow: TextOverflow.Ellipsis })
-            .fontColor('#ff6434')
-            .fontSize(14)
+            .fontColor('#FA5151')
+            .fontSize(13)
         }
         .width('100%')
-        .height(40)
-        .backgroundColor('#fff0eb')
+        .height(32)
+        .backgroundColor('#FFF5F5')
         .justifyContent(FlexAlign.Center)
         .visibility(this.connectStatus ? Visibility.None : Visibility.Visible)
         .animation({
@@ -177,8 +148,8 @@ export struct CustomeTitleBar {
   @Builder
   BottomLine() {
     Line()
-      .height('1px')
+      .height('0.5px')
       .width('100%')
-      .backgroundColor('#dbdbdb')
+      .backgroundColor('#e5e5e5')
   }
 }
